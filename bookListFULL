@@ -1,0 +1,46 @@
+var BookList = function() {
+    this.booksRead = 0;
+    this.booksNotRead = 0;
+    this.nextBook = function() {
+        for (var i = 0; i < this.bookShelf.length; i++) {
+            var book = this.bookShelf[i];
+            if (!book.read && book !== this.currentBook) {
+                return book;
+            }
+        }
+        return null;
+    };
+    this.currentBook = null;
+    this.lastBook = null;
+    this.bookShelf = [];
+    this.add = function(book) {
+        this.bookShelf.push(book);
+        if (book.read) {
+            this.booksRead += 1;
+        } else {
+            this.booksNotRead += 1; 
+        }
+    };
+    this.finishCurrentBook = function() {
+        if (this.currentBook !== null) {
+            this.currentBook.readIt();
+            this.lastBook = this.currentBook;
+        }
+        this.currentBook = this.nextBook();
+    }
+
+}
+
+var Book = function(title, genre, author) {
+    this.title = title; 
+    this.genre = genre;
+    this.author = author; 
+    this.read = false;
+    this.readDate = null;
+    this.readIt = function() {
+        this.read = true;
+        this.readDate = new Date();
+    };
+}
+
+var jacekBookList = new BookList();
